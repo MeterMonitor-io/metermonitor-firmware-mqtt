@@ -2,16 +2,11 @@
 
 CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
 
-# Large MQTT outbox for base64-encoded JPEG payloads (~100 KB each)
+# All supported boards have 4 MB flash; partition table needs 3.1 MB
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+
+# MQTT receive buffer (transmit buffer is set dynamically in mqtt.c)
 CONFIG_MQTT_BUFFER_SIZE=8192
-CONFIG_MQTT_OUTBOX_CHUNK_SIZE=65536
-CONFIG_MQTT_OUTBOX_CHUNK_NUMBER=4
-
-# Allow heap allocator to use PSRAM for large buffers when available
-CONFIG_SPIRAM_MALLOC_ALWAYSINTERNAL=16384
-
-# Hostname
-CONFIG_LWIP_LOCAL_HOSTNAME="metermonitor"
 
 # Partition table
 CONFIG_PARTITION_TABLE_CUSTOM=y
