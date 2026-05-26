@@ -1,0 +1,23 @@
+menu "MeterMonitor"
+
+    choice BOARD_MODEL
+        prompt "Target board"
+        default BOARD_AI_THINKER
+        help
+            Select the camera board. This determines which GPIO pin
+            assignments are compiled in for the camera interface.
+
+        config BOARD_AI_THINKER
+            bool "AI-Thinker ESP32-CAM / Freenove WROVER / TTGO T-Journal"
+        config BOARD_M5CAM_A
+            bool "M5Stack ESP32-CAM (Model A, no PSRAM)"
+        config BOARD_M5CAM_B
+            bool "M5Stack ESP32-CAM (Model B, PSRAM)"
+        config BOARD_ESP_EYE
+            bool "Espressif ESP-EYE / TTGO T-Camera Plus"
+        config BOARD_ESP32S3_EYE
+            bool "Espressif ESP32-S3-EYE"
+            depends on IDF_TARGET_ESP32S3
+    endchoice
+
+endmenu

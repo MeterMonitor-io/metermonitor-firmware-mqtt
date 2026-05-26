@@ -1,0 +1,22 @@
+idf_component_register(
+    SRCS
+        "main.c"
+        "config.c"
+        "wifi.c"
+        "time_sync.c"
+        "camera.c"
+        "mqtt.c"
+    INCLUDE_DIRS
+        "."
+    REQUIRES
+        nvs_flash
+        esp_wifi
+        esp_event
+        esp_netif
+        driver
+        mqtt
+        cjson
+        mbedtls
+        lwip
+        espressif__esp32-camera
+)

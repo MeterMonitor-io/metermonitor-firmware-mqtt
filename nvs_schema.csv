@@ -1,0 +1,10 @@
+key,type,encoding,value
+wifi_ssid,data,string,
+wifi_pass,data,string,
+mqtt_url,data,string,mqtt://192.168.1.1:1883
+mqtt_user,data,string,
+mqtt_pass,data,string,
+mqtt_topic,data,string,MeterMonitor/meter
+meter_name,data,string,meter
+interval,data,u32,30
+flash_en,data,u8,1
