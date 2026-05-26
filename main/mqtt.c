@@ -115,6 +115,7 @@ static void handle_cmd(const char *topic, const char *data, int data_len) {
 
 static void capture_task(void *arg) {
     xEventGroupWaitBits(s_events, MQTT_CONNECTED_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+    time_sync_wait_for_sync();
     ESP_LOGI(TAG, "capture loop started, interval=%lus", (unsigned long)g_config.interval);
 
     while (1) {
