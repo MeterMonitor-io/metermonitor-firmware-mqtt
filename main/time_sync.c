@@ -32,6 +32,6 @@ void time_sync_get_iso8601(char *buf, size_t len) {
     time_t now;
     struct tm info;
     time(&now);
-    localtime_r(&now, &info);
-    strftime(buf, len, "%Y-%m-%dT%H:%M:%S", &info);
+    gmtime_r(&now, &info);
+    strftime(buf, len, "%Y-%m-%dT%H:%M:%SZ", &info);
 }
