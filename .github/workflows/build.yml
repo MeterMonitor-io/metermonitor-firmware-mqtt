@@ -30,24 +30,22 @@ jobs:
             target: esp32s3
             sdkconfig: boards/esp32s3_eye.sdkconfig
 
+    container:
+      image: espressif/idf:v5.4.1
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Merge sdkconfig
+      - name: Merge sdkconfig and build
         run: |
-          # Board overrides take priority; they're prepended so base defaults fill gaps
+          # Board overrides take priority; prepend so base defaults fill remaining gaps
           cat ${{ matrix.board.sdkconfig }} sdkconfig.defaults > sdkconfig.defaults.merged
           mv sdkconfig.defaults.merged sdkconfig.defaults
-
-      - name: Build with ESP-IDF
-        uses: espressif/esp-idf-ci-action@v1
-        with:
-          esp_idf_version: v5.4.1
-          target: ${{ matrix.board.target }}
-          command: idf.py build
+          . $IDF_PATH/export.sh
+          idf.py --no-ccache -D IDF_TARGET=${{ matrix.board.target }} build
 
       - name: Package artifacts
         run: |
