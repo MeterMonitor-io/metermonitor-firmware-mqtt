@@ -38,13 +38,15 @@ void config_load(void) {
     nvs_read_str(h, "mqtt_topic", g_config.mqtt_topic, MQTT_TOPIC_MAX, "MeterMonitor/meter");
     nvs_read_str(h, "meter_name", g_config.meter_name, METER_NAME_MAX, "meter");
 
-    if (nvs_get_u32(h, "interval", &g_config.interval) != ESP_OK) g_config.interval = 30;
-    if (nvs_get_u8(h,  "flash_en", &g_config.flash_en) != ESP_OK)  g_config.flash_en = 1;
+    if (nvs_get_u32(h, "interval",      &g_config.interval)      != ESP_OK) g_config.interval      = 30;
+    if (nvs_get_u8(h,  "flash_en",      &g_config.flash_en)      != ESP_OK) g_config.flash_en      = 1;
+    if (nvs_get_u32(h, "flash_delay_ms", &g_config.flash_delay_ms) != ESP_OK) g_config.flash_delay_ms = 100;
 
     nvs_close(h);
 
-    ESP_LOGI(TAG, "loaded: ssid=%s topic=%s interval=%lus flash=%d",
-             g_config.wifi_ssid, g_config.mqtt_topic, (unsigned long)g_config.interval, g_config.flash_en);
+    ESP_LOGI(TAG, "loaded: ssid=%s topic=%s interval=%lus flash=%d flash_delay=%lums",
+             g_config.wifi_ssid, g_config.mqtt_topic, (unsigned long)g_config.interval,
+             g_config.flash_en, (unsigned long)g_config.flash_delay_ms);
 }
 
 void config_save_interval(uint32_t interval) {
@@ -64,5 +66,15 @@ void config_save_flash(uint8_t flash_en) {
         nvs_commit(h);
         nvs_close(h);
         g_config.flash_en = flash_en;
+    }
+}
+
+void config_save_flash_delay(uint32_t ms) {
+    nvs_handle_t h;
+    if (nvs_open(MM_NVS_NAMESPACE, NVS_READWRITE, &h) == ESP_OK) {
+        nvs_set_u32(h, "flash_delay_ms", ms);
+        nvs_commit(h);
+        nvs_close(h);
+        g_config.flash_delay_ms = ms;
     }
 }

@@ -8,3 +8,4 @@ mqtt_topic,data,string,MeterMonitor/meter
 meter_name,data,string,meter
 interval,data,u32,30
 flash_en,data,u8,1
+flash_delay_ms,data,u32,100

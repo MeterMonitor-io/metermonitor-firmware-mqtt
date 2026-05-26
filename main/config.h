@@ -21,6 +21,7 @@ typedef struct {
     char     meter_name[METER_NAME_MAX];
     uint32_t interval;
     uint8_t  flash_en;
+    uint32_t flash_delay_ms;
 } mm_config_t;
 
 extern mm_config_t g_config;
@@ -28,3 +29,4 @@ extern mm_config_t g_config;
 void config_load(void);
 void config_save_interval(uint32_t interval);
 void config_save_flash(uint8_t flash_en);
+void config_save_flash_delay(uint32_t ms);

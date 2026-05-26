@@ -56,6 +56,7 @@ static void publish_image(void) {
     cJSON *caps = cJSON_AddArrayToObject(root, "capabilities");
     cJSON_AddItemToArray(caps, cJSON_CreateString("capture"));
     cJSON_AddItemToArray(caps, cJSON_CreateString("flash"));
+    cJSON_AddItemToArray(caps, cJSON_CreateString("flash_delay"));
     cJSON_AddItemToArray(caps, cJSON_CreateString("interval"));
 
     cJSON *pic = cJSON_AddObjectToObject(root, "picture");
@@ -106,6 +107,11 @@ static void handle_cmd(const char *topic, const char *data, int data_len) {
         uint8_t v = atoi(val) ? 1 : 0;
         config_save_flash(v);
         ESP_LOGI(TAG, "cmd: flash=%d", v);
+
+    } else if (strcmp(cmd, "flash_delay") == 0) {
+        uint32_t ms = (uint32_t)atoi(val);
+        config_save_flash_delay(ms);
+        ESP_LOGI(TAG, "cmd: flash_delay=%lums", (unsigned long)ms);
 
     } else if (strcmp(cmd, "interval") == 0) {
         uint32_t secs = (uint32_t)atoi(val);

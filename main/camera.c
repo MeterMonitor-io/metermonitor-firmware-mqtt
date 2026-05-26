@@ -71,7 +71,8 @@ camera_fb_t *camera_capture(void) {
 #if CAM_PIN_FLASH >= 0
     if (g_config.flash_en) {
         gpio_set_level(CAM_PIN_FLASH, 1);
-        vTaskDelay(pdMS_TO_TICKS(100));
+        if (g_config.flash_delay_ms > 0)
+            vTaskDelay(pdMS_TO_TICKS(g_config.flash_delay_ms));
     }
 #endif
 
