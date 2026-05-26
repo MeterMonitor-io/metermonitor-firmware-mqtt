@@ -15,7 +15,7 @@ idf_component_register(
         esp_netif
         driver
         mqtt
-        cjson
+        json
         mbedtls
         lwip
         espressif__esp32-camera
