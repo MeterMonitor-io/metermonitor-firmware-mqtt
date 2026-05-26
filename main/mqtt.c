@@ -53,6 +53,11 @@ static void publish_image(void) {
     cJSON_AddNumberToObject(root, "picture_number", (double)(++s_picture_number));
     cJSON_AddNumberToObject(root, "WiFi-RSSI",      rssi);
 
+    cJSON *caps = cJSON_AddArrayToObject(root, "capabilities");
+    cJSON_AddItemToArray(caps, cJSON_CreateString("capture"));
+    cJSON_AddItemToArray(caps, cJSON_CreateString("flash"));
+    cJSON_AddItemToArray(caps, cJSON_CreateString("interval"));
+
     cJSON *pic = cJSON_AddObjectToObject(root, "picture");
     cJSON_AddStringToObject(pic, "format",    "jpeg");
     cJSON_AddStringToObject(pic, "timestamp", timestamp);
