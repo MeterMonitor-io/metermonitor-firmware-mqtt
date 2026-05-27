@@ -48,7 +48,7 @@ esp_err_t camera_init(void) {
         .pin_vsync    = CAM_PIN_VSYNC,
         .pin_href     = CAM_PIN_HREF,
         .pin_pclk     = CAM_PIN_PCLK,
-        .xclk_freq_hz = 20000000,
+        .xclk_freq_hz = 10000000,
         .ledc_timer   = LEDC_TIMER_0,
         .ledc_channel = LEDC_CHANNEL_0,
         .pixel_format = PIXFORMAT_JPEG,
@@ -61,10 +61,16 @@ esp_err_t camera_init(void) {
     esp_err_t err = esp_camera_init(&config);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "esp_camera_init failed: %s", esp_err_to_name(err));
-    } else {
-        ESP_LOGI(TAG, "camera ready");
+        return err;
     }
-    return err;
+
+    sensor_t *s = esp_camera_sensor_get();
+    if (s) {
+        s->set_aec2(s, 1);
+        s->set_awb_gain(s, 1);
+    }
+    ESP_LOGI(TAG, "camera ready");
+    return ESP_OK;
 }
 
 camera_fb_t *camera_capture(void) {
@@ -73,6 +79,12 @@ camera_fb_t *camera_capture(void) {
         gpio_set_level(CAM_PIN_FLASH, 1);
         if (g_config.flash_delay_ms > 0)
             vTaskDelay(pdMS_TO_TICKS(g_config.flash_delay_ms));
+        // With CAMERA_GRAB_WHEN_EMPTY the buffer fills immediately after
+        // the previous fb_return(), so it holds a stale frame captured in
+        // the dark.  Discard it so the next fb_get() waits for a fresh one
+        // that is exposed entirely with the LED on.
+        camera_fb_t *stale = esp_camera_fb_get();
+        if (stale) esp_camera_fb_return(stale);
     }
 #endif
 
