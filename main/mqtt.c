@@ -52,6 +52,7 @@ static void publish_image(void) {
     cJSON_AddStringToObject(root, "name",           g_config.meter_name);
     cJSON_AddNumberToObject(root, "picture_number", (double)(++s_picture_number));
     cJSON_AddNumberToObject(root, "WiFi-RSSI",      rssi);
+    cJSON_AddNumberToObject(root, "interval",       (double)g_config.interval);
 
     cJSON *caps = cJSON_AddArrayToObject(root, "capabilities");
     cJSON_AddItemToArray(caps, cJSON_CreateString("capture"));
